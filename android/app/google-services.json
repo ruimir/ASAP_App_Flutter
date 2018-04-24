@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1082572898568",
+    "firebase_url": "https://asap-96065.firebaseio.com",
+    "project_id": "asap-96065",
+    "storage_bucket": "asap-96065.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082572898568:android:b81fbba6bc016e57",
+        "android_client_info": {
+          "package_name": "lei.uminho.healthpush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1082572898568-1c1abnol9ekqc68na33ss6cj6u1678u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDpvKZMa-7_j4p-F_RGIMHOkIVP-EAEWg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
