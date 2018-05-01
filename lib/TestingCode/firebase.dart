@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-
 final Map<String, Item> _items = <String, Item>{};
 Item _itemForMessage(Map<String, dynamic> message) {
   final String itemId = message['id'];
@@ -32,10 +31,10 @@ class Item {
     final String routeName = '/detail/$itemId';
     return routes.putIfAbsent(
       routeName,
-          () => new MaterialPageRoute<Null>(
-        settings: new RouteSettings(name: routeName),
-        builder: (BuildContext context) => new DetailPage(itemId),
-      ),
+      () => new MaterialPageRoute<Null>(
+            settings: new RouteSettings(name: routeName),
+            builder: (BuildContext context) => new DetailPage(itemId),
+          ),
     );
   }
 }
@@ -90,7 +89,7 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
 
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   final TextEditingController _topicController =
-  new TextEditingController(text: 'topic');
+      new TextEditingController(text: 'topic');
 
   Widget _buildDialog(BuildContext context, Item item) {
     return new AlertDialog(
@@ -173,9 +172,9 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
         // For testing -- simulate a message being received
         floatingActionButton: new FloatingActionButton(
           onPressed: () => _showItemDialog(<String, dynamic>{
-            "id": "2",
-            "status": "out of stock",
-          }),
+                "id": "2",
+                "status": "out of stock",
+              }),
           tooltip: 'Simulate Message',
           child: const Icon(Icons.message),
         ),
@@ -200,20 +199,20 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
                   onPressed: _topicButtonsDisabled
                       ? null
                       : () {
-                    _firebaseMessaging
-                        .subscribeToTopic(_topicController.text);
-                    _clearTopicText();
-                  },
+                          _firebaseMessaging
+                              .subscribeToTopic(_topicController.text);
+                          _clearTopicText();
+                        },
                 ),
                 new FlatButton(
                   child: const Text("unsubscribe"),
                   onPressed: _topicButtonsDisabled
                       ? null
                       : () {
-                    _firebaseMessaging
-                        .unsubscribeFromTopic(_topicController.text);
-                    _clearTopicText();
-                  },
+                          _firebaseMessaging
+                              .unsubscribeFromTopic(_topicController.text);
+                          _clearTopicText();
+                        },
                 ),
               ])
             ],

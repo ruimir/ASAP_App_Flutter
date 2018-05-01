@@ -109,7 +109,6 @@ class RandomWordsState extends State<RandomWords> {
               title: new Text('Saved Suggestions'),
             ),
             body: new ListView(children: divided),
-
           );
         },
       ),

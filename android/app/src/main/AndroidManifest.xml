@@ -15,7 +15,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="ASAP"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/logo_p2">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
