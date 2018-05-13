@@ -1,11 +1,14 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'login.dart';
+import 'register.dart';
+import 'verify.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(new mainMenu());
+void main() {
+  runApp(new mainMenu());
+}
 
 class mainMenu extends StatelessWidget {
   @override
@@ -15,6 +18,12 @@ class mainMenu extends StatelessWidget {
           primaryColor: Colors.teal,
         ),
         title: 'ASAP',
+        routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) => new LoginScreen(),
+          '/boot': (BuildContext context) => new menu(),
+          '/register': (BuildContext context) => new RegisterScreen(),
+          '/verify': (BuildContext context) => new VerifyScreen(),
+        },
         home: new menu());
   }
 }
@@ -22,6 +31,12 @@ class mainMenu extends StatelessWidget {
 class menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<bool> islogged = userLogged();
+    islogged.then((bool value) {
+      print(value);
+    }, onError: (e) {
+      print(e);
+    });
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('ASAP'),
@@ -40,11 +55,7 @@ class menu extends StatelessWidget {
               child: new RaisedButton(
                 child: const Text('Iniciar Sessão'),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SecondScreen()),
-                  );
+                  Navigator.of(context).pushNamed('/login');
                   // Perform some action
                 },
               ),
@@ -57,6 +68,7 @@ class menu extends StatelessWidget {
               child: new RaisedButton(
                 child: const Text('Registo'),
                 onPressed: () {
+                  Navigator.of(context).pushNamed('/register');
                   // Perform some action
                 },
               ),
@@ -69,6 +81,7 @@ class menu extends StatelessWidget {
               child: new RaisedButton(
                 child: const Text('Validação'),
                 onPressed: () {
+                  Navigator.of(context).pushNamed('/verify');
                   // Perform some action
                 },
               ),
@@ -77,5 +90,15 @@ class menu extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+//Incrementing counter after click
+Future<bool> userLogged() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString('jwtKey') == null) {
+    return false;
+  } else {
+    return true;
   }
 }
