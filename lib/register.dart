@@ -10,6 +10,13 @@ import './Utils/RegisterData.dart';
 // Add import for validate package.
 
 class RegisterScreen extends StatefulWidget {
+  RegisterScreen();
+
+  factory RegisterScreen.forDesignTime() {
+    // TODO: add arguments
+    return new RegisterScreen();
+  }
+
   @override
   State<StatefulWidget> createState() => new _RegisterPageState();
 }
@@ -220,7 +227,7 @@ class _DateTimePicker extends StatelessWidget {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: new DateTime(2015, 8),
+        firstDate: new DateTime(1900, 8),
         lastDate: new DateTime(2101));
     if (picked != null && picked != selectedDate) selectDate(picked);
   }

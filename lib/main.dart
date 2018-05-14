@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
 import 'verify.dart';
+import 'frontPage.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -23,17 +25,24 @@ class mainMenu extends StatelessWidget {
           '/boot': (BuildContext context) => new menu(),
           '/register': (BuildContext context) => new RegisterScreen(),
           '/verify': (BuildContext context) => new VerifyScreen(),
+          '/frontPage': (BuildContext context) => new FrontPageScreen(),
         },
         home: new menu());
   }
 }
 
 class menu extends StatelessWidget {
+  menu();
+
+
+
   @override
   Widget build(BuildContext context) {
     Future<bool> islogged = userLogged();
     islogged.then((bool value) {
-      print(value);
+      if (value) {
+        Navigator.of(context).pushNamed('/frontPage');
+      }
     }, onError: (e) {
       print(e);
     });
@@ -55,7 +64,7 @@ class menu extends StatelessWidget {
               child: new RaisedButton(
                 child: const Text('Iniciar Sessão'),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/login');
+                  Navigator.of(context).pushNamed('/frontPage');
                   // Perform some action
                 },
               ),

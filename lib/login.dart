@@ -8,9 +8,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './Utils/User.dart';
+
 // Add import for validate package.
 
 class LoginScreen extends StatefulWidget {
+  LoginScreen();
+
+  factory LoginScreen.forDesignTime() {
+    // TODO: add arguments
+    return new LoginScreen();
+  }
+
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
 }
@@ -176,7 +184,7 @@ firebaseLink(String firebaseToken) async {
   String bearer = "Bearer " + key;
   Map body = {"firebaseToken": firebaseToken};
   final response = await http.post(
-      "http://aggro.home:3000/webService/firebaseLink",
+      "http://localhost:3000/webService/firebaseLink",
       body: body,
       headers: {HttpHeaders.AUTHORIZATION: bearer});
   //final responseJson = json.decode(response.body);
