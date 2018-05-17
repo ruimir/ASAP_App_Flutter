@@ -64,7 +64,7 @@ class menu extends StatelessWidget {
               child: new RaisedButton(
                 child: const Text('Iniciar Sessão'),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/frontPage');
+                  Navigator.of(context).pushNamed('/login');
                   // Perform some action
                 },
               ),
@@ -96,6 +96,19 @@ class menu extends StatelessWidget {
               ),
             ),
           ),
+          new Center(
+            child: new Container(
+              width: 150.0,
+              margin: const EdgeInsets.all(10.0),
+              child: new RaisedButton(
+                child: const Text('Batota para menu'),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/frontPage');
+                  // Perform some action
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

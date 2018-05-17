@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import './Utils/config.dart' as config;
 
 import './Utils/RegisterData.dart';
 
@@ -92,8 +93,7 @@ class _VerifyPageState extends State<VerifyScreen> {
                           // the form is invalid.
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            Future<RegisterData> user =
-                                verify_user(this._data);
+                            Future<RegisterData> user = verify_user(this._data);
                             user.then((RegisterData onValue) {
                               if (onValue.status == "Error") {
                                 Scaffold.of(context).showSnackBar(new SnackBar(
@@ -124,12 +124,13 @@ class _VerifyPageState extends State<VerifyScreen> {
 
 Future<RegisterData> verify_user(_LoginData login) async {
   Map body = {
-    "numSequencial": login.numUtente,
+    "numRegional": login.numUtente,
     "newPassword": login.password,
     "twoStep": login.numValidacao,
   };
+  String con = config.connection + "webService/validacaoUser";
   final response = await http.post(
-    "http://aggro.home:3000/webService/validacaoUser",
+    con,
     body: body,
   );
   final responseJson = json.decode(response.body);

@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import './Utils/config.dart' as config;
 
 import './Utils/User.dart';
 
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginScreen> {
                           // the form is invalid.
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            var numSequencial = this._data.numUtente;
+                            var numRegional = this._data.numUtente;
                             //Sending data to ASAPs servers
                             Future<User> test = login(
                                 this._data.numUtente, this._data.password);
@@ -126,16 +127,17 @@ class _LoginPageState extends State<LoginScreen> {
                                   var result = firebaseLink(token);
                                   print(result);
                                 });
-                                _saveUser(value, int.parse(numSequencial));
+                                _saveUser(value, int.parse(numRegional));
+                                Navigator.of(context).pushNamed('/frontPage');
                               } else {
                                 Scaffold.of(context).showSnackBar(new SnackBar(
                                     content: new Text(
-                                        'Número Sequencial ou Password Errada')));
+                                        'Número de utente ou password Errada')));
                               }
                             }, onError: (e) {
                               print(e);
                               Scaffold.of(context).showSnackBar(
-                                  new SnackBar(content: new Text("Erro!")));
+                                  new SnackBar(content: new Text("Verifique a sua conexão e tente novamente")));
                             });
                           }
                         },
@@ -161,10 +163,10 @@ class _LoginPageState extends State<LoginScreen> {
   }
 }
 
-Future<User> login(String numSequencial, String password) async {
-  Map body = {"numSequencial": numSequencial, "password": password};
-  final response =
-      await http.post("http://aggro.home:3000/webService/login", body: body);
+Future<User> login(String numRegional, String password) async {
+  Map body = {"numRegional": numRegional, "password": password};
+  String con = config.connection + "webService/login";
+  final response = await http.post(con, body: body);
   final responseJson = json.decode(response.body);
 
   return new User.fromJson(responseJson);
@@ -183,9 +185,8 @@ firebaseLink(String firebaseToken) async {
   assert(key != null);
   String bearer = "Bearer " + key;
   Map body = {"firebaseToken": firebaseToken};
-  final response = await http.post(
-      "http://localhost:3000/webService/firebaseLink",
-      body: body,
-      headers: {HttpHeaders.AUTHORIZATION: bearer});
+  String con = config.connection + "webService/firebaseLink";
+  final response = await http
+      .post(con, body: body, headers: {HttpHeaders.AUTHORIZATION: bearer});
   //final responseJson = json.decode(response.body);
 }

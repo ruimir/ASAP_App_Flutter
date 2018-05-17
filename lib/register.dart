@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import './Utils/RegisterData.dart';
+import './Utils/config.dart' as config;
 
 // Add import for validate package.
 
@@ -138,15 +139,15 @@ class _RegisterPageState extends State<RegisterScreen> {
                         user.then((RegisterData onValue) {
                           if (onValue.status == "Error") {
                             Scaffold.of(context).showSnackBar(new SnackBar(
-                                content: new Text("Error: " + onValue.error)));
+                                content: new Text("Erro: " + onValue.error)));
                           } else {
                             Scaffold.of(context).showSnackBar(new SnackBar(
-                                content: new Text("Utilizador Registado ^_^")));
+                                content: new Text("Utilizador Registado 🤩")));
                           }
                         }, onError: (e) {
                           print(e);
                           Scaffold.of(context).showSnackBar(
-                              new SnackBar(content: new Text("Erro!")));
+                              new SnackBar(content: new Text("Verifique a sua conexão e tente novamente")));
                         });
                       }
                     },
@@ -257,14 +258,15 @@ class _DateTimePicker extends StatelessWidget {
 
 Future<RegisterData> register_user(_LoginData login) async {
   Map body = {
-    "numSequencial": login.numUtente,
+    "numRegional": login.numUtente,
     "numTelemovel": ("+351") + login.numeroTelemovel.toString(),
     "dataNascimento": login.dataNascimento.toIso8601String().substring(0, 10),
     "email": login.email,
     "morada": login.morada
   };
+  String con = config.connection + "webService/registoUser";
   final response = await http.post(
-    "http://aggro.home:3000/webService/registoUser",
+    con,
     body: body,
   );
   final responseJson = json.decode(response.body);
