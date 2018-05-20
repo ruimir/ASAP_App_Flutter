@@ -36,6 +36,8 @@ flutter:
   assets:
       - images/ASAPlogo.png
       - images/asap_white.png
+      - images/asap_new_white.png
+      - images/asap_new.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

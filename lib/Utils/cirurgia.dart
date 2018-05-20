@@ -43,9 +43,9 @@ class Cirugia extends StatelessWidget {
               child: new Row(
                 mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-            new Text("Data: 20/20/2015"),
-            new Text("Hora: 02:00"),
-            new Text("Duração: 00:45")
+            new Text("Data: "+this.dataIntervencao),
+            new Text("Hora: "+this.horaIni),
+            new Text("Duração: "+this.tempoDuracao)
           ])),
         ],
       ),

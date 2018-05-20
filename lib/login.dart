@@ -128,16 +128,19 @@ class _LoginPageState extends State<LoginScreen> {
                                   print(result);
                                 });
                                 _saveUser(value, int.parse(numRegional));
-                                Navigator.of(context).pushNamed('/frontPage');
+                                Navigator
+                                    .of(context)
+                                    .pushReplacementNamed('/frontPage');
                               } else {
                                 Scaffold.of(context).showSnackBar(new SnackBar(
                                     content: new Text(
-                                        'Número de utente ou password Errada')));
+                                        'Número de utente ou password Errada / Utilizador não confirmado')));
                               }
                             }, onError: (e) {
                               print(e);
-                              Scaffold.of(context).showSnackBar(
-                                  new SnackBar(content: new Text("Verifique a sua conexão e tente novamente")));
+                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                  content: new Text(
+                                      "Verifique a sua conexão e tente novamente")));
                             });
                           }
                         },

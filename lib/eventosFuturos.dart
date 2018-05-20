@@ -18,67 +18,104 @@ import './Utils/gaveta.dart' as gaveta;
 
 // Add import for validate package.
 
-class FrontPageScreen extends StatefulWidget {
-  FrontPageScreen();
+class EventosFuturos extends StatefulWidget {
+  EventosFuturos();
 
-  factory FrontPageScreen.forDesignTime() {
+  factory EventosFuturos.forDesignTime() {
     // TODO: add arguments
-    return new FrontPageScreen();
+    return new EventosFuturos();
   }
 
   @override
-  State<StatefulWidget> createState() => new _FrontPageState();
+  State<StatefulWidget> createState() => new _EventosFuturosState();
 }
 
-class _LoginData {
-  String numUtente = '';
-  int numeroTelemovel = 0;
-  String morada = '';
-  String email = '';
-  DateTime dataNascimento = new DateTime.now();
-}
-
-class _FrontPageState extends State<FrontPageScreen> {
+class _EventosFuturosState extends State<EventosFuturos> {
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  _LoginData _data = new _LoginData();
-
-  DateTime _fromDate = new DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('ASAP'),
-        ),
+    return new DefaultTabController(
+      length: 3,
+      child: new Scaffold(
         drawer: gaveta.gaveta(context),
-        body: mainContent(screenSize));
-  }
+        appBar: new AppBar(
+          bottom: new TabBar(
+            tabs: [
+              new Tab(text: "Consultas"),
+              new Tab(text: "Cirurgias"),
+              new Tab(text: "Exames"),
+            ],
+          ),
+          title: new Text('Eventos Futuros'),
+        ),
+        body: new TabBarView(
+          children: [
+            new FutureBuilder<dynamic>(
+              future: getEventos(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  //return new Text(snapshot.data["cirugias"].toString());
+                  return new ListView(
+                      padding: new EdgeInsets.all(15.0),
+                      children: [
+                        new Column(children: criarListaConstltas(snapshot.data))
+                      ]);
+                } else if (snapshot.hasError) {
+                  return new Text("${snapshot.error}");
+                }
 
-  Builder mainContent(Size screenSize) {
-    return new Builder(builder: (BuildContext context) {
-      return new FutureBuilder<dynamic>(
-        future: getEventos(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            //return new Text(snapshot.data["cirugias"].toString());
-            return new ListView(padding: new EdgeInsets.all(15.0), children: [
-              new Column(children: criarListaCirurgias(snapshot.data)),
-              new Column(children: criarListaExames(snapshot.data)),
-              new Column(children: criarListaConstltas(snapshot.data))
-            ]);
-          } else if (snapshot.hasError) {
-            return new Text("${snapshot.error}");
-          }
+                // By default, show a loading spinner
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
+              },
+            ),
+            new FutureBuilder<dynamic>(
+              future: getEventos(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  //return new Text(snapshot.data["cirugias"].toString());
+                  return new ListView(
+                      padding: new EdgeInsets.all(15.0),
+                      children: [
+                        new Column(
+                            children: criarListaCirurgias(snapshot.data)),
+                      ]);
+                } else if (snapshot.hasError) {
+                  return new Text("${snapshot.error}");
+                }
 
-          // By default, show a loading spinner
-          return new Center(
-            child: new CircularProgressIndicator(),
-          );
-        },
-      );
-    });
+                // By default, show a loading spinner
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
+              },
+            ),
+            new FutureBuilder<dynamic>(
+              future: getEventos(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  //return new Text(snapshot.data["cirugias"].toString());
+                  return new ListView(
+                      padding: new EdgeInsets.all(15.0),
+                      children: [
+                        new Column(children: criarListaExames(snapshot.data)),
+                      ]);
+                } else if (snapshot.hasError) {
+                  return new Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -87,7 +124,7 @@ Future<dynamic> getEventos() async {
   String key = prefs.getString('jwtKey');
   assert(key != null);
   String bearer = "Bearer " + key;
-  String con = config.connection + "webService/eventos";
+  String con = config.connection + "webService/eventosAgendados";
   final response =
       await http.get(con, headers: {HttpHeaders.AUTHORIZATION: bearer});
   var responseJson = json.decode(response.body);

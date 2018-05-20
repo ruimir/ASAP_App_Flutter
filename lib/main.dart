@@ -5,6 +5,9 @@ import 'login.dart';
 import 'register.dart';
 import 'verify.dart';
 import 'frontPage.dart';
+import 'eventosFuturos.dart';
+import 'eventosPassados.dart';
+import 'perfil.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +29,10 @@ class mainMenu extends StatelessWidget {
           '/register': (BuildContext context) => new RegisterScreen(),
           '/verify': (BuildContext context) => new VerifyScreen(),
           '/frontPage': (BuildContext context) => new FrontPageScreen(),
+          '/eventosFuturos': (BuildContext context) => new EventosFuturos(),
+          '/eventosPassados': (BuildContext context) =>
+              new EventosPassadosScreen(),
+          '/perfil': (BuildContext context) => new PerfilScreen(),
         },
         home: new menu());
   }
@@ -34,28 +41,36 @@ class mainMenu extends StatelessWidget {
 class menu extends StatelessWidget {
   menu();
 
-
-
   @override
   Widget build(BuildContext context) {
     Future<bool> islogged = userLogged();
     islogged.then((bool value) {
+      print(value);
       if (value) {
-        Navigator.of(context).pushNamed('/frontPage');
+        Navigator.of(context).pushReplacementNamed('/frontPage');
+      } else {
+        //return buildScaffold(context);
       }
     }, onError: (e) {
       print(e);
     });
+    return buildScaffold(context);
+  }
+
+  Scaffold buildScaffold(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('ASAP'),
       ),
       body: new ListView(
         children: [
-          new Image.asset(
-            'images/ASAPlogo.png',
-            width: 100.0,
-            height: 240.0,
+          new Container(
+            padding: new EdgeInsets.all(15.0),
+            child: new Image.asset(
+              'images/asap_new.png',
+              width: 100.0,
+              height: 240.0,
+            ),
           ),
           new Center(
             child: new Container(
@@ -96,19 +111,6 @@ class menu extends StatelessWidget {
               ),
             ),
           ),
-          new Center(
-            child: new Container(
-              width: 150.0,
-              margin: const EdgeInsets.all(10.0),
-              child: new RaisedButton(
-                child: const Text('Batota para menu'),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/frontPage');
-                  // Perform some action
-                },
-              ),
-            ),
-          )
         ],
       ),
     );
