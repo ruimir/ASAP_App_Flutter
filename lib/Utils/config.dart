@@ -1,3 +1,3 @@
 library asap.prefs;
 
-String connection = "http://aggro.home:3000/";
+String connection = "https://asap-app.azurewebsites.net/";

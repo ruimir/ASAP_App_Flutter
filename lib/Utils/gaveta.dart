@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 Drawer gaveta(BuildContext context) {
   return new Drawer(
     // Add a ListView to the drawer. This ensures the user can scroll
@@ -67,9 +65,7 @@ Drawer gaveta(BuildContext context) {
           onTap: () {
             logoutUser().then((onValue) {
               Navigator.of(context).pushReplacementNamed('/boot');
-              Navigator.pop(context);
             });
-            Navigator.of(context).pushReplacementNamed('/boot');
           },
         ),
       ],
