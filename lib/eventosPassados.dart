@@ -66,8 +66,11 @@ class _EventosPassadosState extends State<EventosPassadosScreen> {
   }
 }
 
-Future<SplayTreeMap<DateTime, String>> getEventos() async {
-  SplayTreeMap<DateTime, String> eventos = new SplayTreeMap<DateTime, String>();
+//      this.numAdmissao,
+//      this.horaIni,
+//this.tempoDuracao,
+Future<SplayTreeMap<DateTime, Map>> getEventos() async {
+  SplayTreeMap<DateTime, Map> eventos = new SplayTreeMap<DateTime, Map>();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String key = prefs.getString('jwtKey');
   assert(key != null);
@@ -80,19 +83,33 @@ Future<SplayTreeMap<DateTime, String>> getEventos() async {
   List<dynamic> exames = responseJson["exames"];
   List<dynamic> consultas = responseJson["consultas"];
   cirurgias.forEach((element) {
-    eventos[DateTime.parse(element["data_intervencao"].toString())] = "Cirugia";
+    eventos[DateTime.parse(element["data_intervencao"].toString())] = {
+      'tipo': "Cirurgia",
+      'numAdmissao': element["num_admissao"].toString(),
+      'horaIni': element["hora_ini_int"].toString(),
+      'tempoDuracao': element["tempo_duracao"].toString()
+    };
   });
   exames.forEach((element) {
-    eventos[DateTime.parse(element["dta_marcacao"].toString())] = "Exame";
+    eventos[DateTime.parse(element["dta_marcacao"].toString())] = {
+      'tipo': "Exame",
+      'cod_modulo': element["cod_modulo"].toString(),
+      'designacao': element["designacao"].toString(),
+      'hora_marcacao': element["hora_marcacao"].toString()
+    };
   });
   consultas.forEach((element) {
-    eventos[DateTime.parse(element["dataConsulta"].toString())] = "Consulta";
+    eventos[DateTime.parse(element["dataConsulta"].toString())] = {
+      'tipo': "Consulta",
+      'hora_consulta': element["hora_consulta"].toString(),
+      'des_especialidade': element["des_especialidade"].toString(),
+    };
   });
 
   return (eventos);
 }
 
-List<Widget> criarHistorico(SplayTreeMap<DateTime, String> eventos) {
+List<Widget> criarHistorico(SplayTreeMap<DateTime, Map> eventos) {
   List<Widget> lista = [];
   var formatter = new DateFormat('dd-MM-yyyy');
   lista.add(new Container(
@@ -103,14 +120,70 @@ List<Widget> criarHistorico(SplayTreeMap<DateTime, String> eventos) {
           fontWeight: FontWeight.w900,
         )),
   ));
-  eventos.forEach((data, evento) {
+  eventos.forEach((data, Map evento) {
     Color cor = Colors.blue[50];
-    if (evento == "Cirurgia") {
+    Widget eventInfo;
+    if (evento["tipo"] == "Cirurgia") {
       cor = Color.fromARGB(255, 174, 233, 203);
-    } else if (evento == "Consulta") {
+      eventInfo = new Column(
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Número de admissão: " + evento["numAdmissao"]),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Hora início: " + evento["horaIni"]),
+              Text("Duração: " + evento["tempoDuracao"])
+            ],
+          )
+        ],
+      );
+    } else if (evento["tipo"] == "Exame") {
       cor = Color.fromARGB(255, 252, 233, 180);
-    } else if (evento == "Exame") {
+      eventInfo = new Column(
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Designação: " + evento["designacao"]),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text("Código de Módulo: " + evento["cod_modulo"]),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text("Hora de Marcação: " + evento["hora_marcacao"])
+            ],
+          )
+        ],
+      );
+    } else if (evento["tipo"] == "Consulta") {
       cor = Color.fromARGB(255, 253, 215, 233);
+      eventInfo = new Column(
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Especialidade: " + evento["des_especialidade"].toString()),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Hora de consulta: " + evento["hora_consulta"]),
+            ],
+          )
+        ],
+      );
     }
     lista.add(new Card(
         child: new ExpansionTile(
@@ -121,7 +194,7 @@ List<Widget> criarHistorico(SplayTreeMap<DateTime, String> eventos) {
               child: new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              new Chip(backgroundColor: cor, label: Text(evento))
+              new Chip(backgroundColor: cor, label: Text(evento["tipo"]))
             ],
           )),
           Text(formatter.format(data).toString())
@@ -129,7 +202,7 @@ List<Widget> criarHistorico(SplayTreeMap<DateTime, String> eventos) {
       ),
       children: <Widget>[
         new ListTile(
-          title: new Text('Consultas Futuras'),
+          title: eventInfo,
           onTap: () {},
         ),
       ],

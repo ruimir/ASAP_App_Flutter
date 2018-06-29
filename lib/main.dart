@@ -8,6 +8,8 @@ import 'frontPage.dart';
 import 'eventosFuturos.dart';
 import 'eventosPassados.dart';
 import 'perfil.dart';
+import 'passwordReset.dart';
+
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +35,8 @@ class mainMenu extends StatelessWidget {
           '/eventosPassados': (BuildContext context) =>
               new EventosPassadosScreen(),
           '/perfil': (BuildContext context) => new PerfilScreen(),
+          '/reset': (BuildContext context) => new ResetScreen(),
+
         },
         home: new menu());
   }

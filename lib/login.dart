@@ -155,7 +155,11 @@ class _LoginPageState extends State<LoginScreen> {
                           'Recuperar Password',
                           style: new TextStyle(color: Colors.black),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator
+                              .of(context)
+                              .pushReplacementNamed('/reset');
+                        },
                       ),
                       margin: new EdgeInsets.only(top: 20.0),
                     )

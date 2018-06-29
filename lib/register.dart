@@ -121,6 +121,7 @@ class _RegisterPageState extends State<RegisterScreen> {
                     selectDate: (DateTime date) {
                       setState(() {
                         this._data.dataNascimento = date;
+                        _fromDate = date;
                       });
                     }),
                 new Container(
@@ -146,8 +147,9 @@ class _RegisterPageState extends State<RegisterScreen> {
                           }
                         }, onError: (e) {
                           print(e);
-                          Scaffold.of(context).showSnackBar(
-                              new SnackBar(content: new Text("Verifique a sua conexão e tente novamente")));
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                              content: new Text(
+                                  "Verifique a sua conexão e tente novamente")));
                         });
                       }
                     },
