@@ -1,6 +1,7 @@
-# ASAP
+# ASAP App
 
-ASAP, implemented with Flutter
+The ASAP mobile app, implemented with Flutter
+
 
 ## Getting Started
 
