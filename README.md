@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="https://github.com/ruimir/ASAP_App_Flutter/raw/master/images/asap_new.png">
+</p>
+
+
+
 # ASAP App
 
 The ASAP mobile app, implemented with Flutter
